@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System.Text;
 using System;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace RPG.Saving
 {
@@ -16,17 +17,13 @@ namespace RPG.Saving
             using (FileStream stream = File.Open(path, FileMode.Create))
             {
                 Transform playerTransform = GetPlayerTransform();
-                byte[] buffer = SerializeVector(playerTransform.position); 
-                stream.Write(buffer, 0, buffer.Length);
+                BinaryFormatter formatter = new BinaryFormatter();
+                SerializableVector3 position = new SerializableVector3(playerTransform.position);
+                formatter.Serialize(stream, position);
+
                 print("Saving savefile.");
-                // stream.Close(); // Always needs to be closed, or will throw eventually an error. Or just use using as above, it always will close it
             }
 
-        }
-
-        private Transform GetPlayerTransform()
-        {
-            return GameObject.FindWithTag("Player").transform;
         }
 
         public void Load(string saveFile)
@@ -34,15 +31,22 @@ namespace RPG.Saving
             string path = GetPathFromSaveFile(saveFile);
             print ("Loading from " + path);
             using (FileStream stream = File.Open(path, FileMode.Open))
-            {          
-                byte[] buffer = new byte[stream.Length];
-                stream.Read(buffer, 0, buffer.Length);
+            {
                 Transform playerTransform = GetPlayerTransform();
-                playerTransform.position = DeserializeVector(buffer);
+                BinaryFormatter formatter = new BinaryFormatter();
+                SerializableVector3 position = (SerializableVector3)formatter.Deserialize(stream);
+                playerTransform.position = position.ToVector();
+                
                 print ("Loading savefile.");
             }
             
         }
+
+        private Transform GetPlayerTransform()
+        {
+            return GameObject.FindWithTag("Player").transform;
+        }
+
 
         private byte[] SerializeVector(Vector3 vector)
         {
