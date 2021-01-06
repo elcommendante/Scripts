@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RPG.Saving
+namespace GameClient.Saving
 {
     public class SavingWrapper : MonoBehaviour
     {
@@ -22,14 +22,21 @@ namespace RPG.Saving
 
         void Loading()
         {
-            GetComponent<SavingSystem>().Load(defaultSaveFile);
+            Load();
+        }
+        void Saving()
+        {
+            Save();
         }
 
-        void Saving()
+
+        public void Load()
+        {
+            GetComponent<SavingSystem>().Load(defaultSaveFile);
+        }
+        public void Save()
         {
             GetComponent<SavingSystem>().Save(defaultSaveFile);
         }
-
-
     }
 }

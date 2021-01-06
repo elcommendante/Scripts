@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace RPG.Core
+namespace GameClient.Core
 {
 public class Health : MonoBehaviour
     {

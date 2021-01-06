@@ -6,7 +6,7 @@ using System.Text;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace RPG.Saving
+namespace GameClient.Saving
 {
     // public class SavingSystem : MonoBehaviour
     // {

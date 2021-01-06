@@ -3,28 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System;
 
-namespace RPG.Saving
+namespace GameClient.Saving
 {
     public class SavingSystem : MonoBehaviour
     {
         public void Save(string saveFile)
         {
-            string path = GetPathFromSaveFile(saveFile);
-            print("Saving to " + path);
-            using (FileStream stream = File.Open(path, FileMode.Create))
-            {
 
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(stream, CaptureState());
 
-                print("Saving savefile.");
-            }
+            SaveFile(saveFile, CaptureState());
 
         }
 
 
+
         public void Load(string saveFile)
+        {
+
+
+            RestoreState(LoadFile(saveFile));
+            
+        }
+
+        private Dictionary<string, object> LoadFile(string saveFile)
         {
             string path = GetPathFromSaveFile(saveFile);
             print ("Loading from " + path);
@@ -32,14 +35,22 @@ namespace RPG.Saving
             {
 
                 BinaryFormatter formatter = new BinaryFormatter();
-                RestoreState(formatter.Deserialize(stream));
-                print ("Loading savefile.");
+                return (Dictionary<string, object>)formatter.Deserialize(stream);
             }
-            
         }
 
+        private void SaveFile(string saveFile, object state)
+        {
+            string path = GetPathFromSaveFile(saveFile);
+            print("Saving to " + path);
+            using (FileStream stream = File.Open(path, FileMode.Create))
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, state);
+            }
+        }
 
-        private object CaptureState()
+        private Dictionary<string, object> CaptureState()
         {
             Dictionary<string, object> state = new Dictionary <string, object>();
             foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
@@ -50,12 +61,11 @@ namespace RPG.Saving
             }
             return state;
         }
-        private void RestoreState(object state)
+        private void RestoreState(Dictionary<string, object> state)
         {
-            Dictionary<string, object> stateDict = (Dictionary<string, object>)state;
             foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
             {
-                saveable.RestoreState(stateDict[saveable.GetUniqueIdentifier()]);
+                saveable.RestoreState(state[saveable.GetUniqueIdentifier()]);
             }
         }
 

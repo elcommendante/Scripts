@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RPG.World
+namespace GameClient.World
 {
 public class SpawnManager : MonoBehaviour
     {

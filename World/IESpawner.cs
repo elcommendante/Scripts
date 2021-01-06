@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using RPG.Core;
+using GameClient.Core;
 
 
-namespace RPG.Core
+namespace GameClient.Core
 {
 public class IESpawner : MonoBehaviour
 {

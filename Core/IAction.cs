@@ -1,4 +1,4 @@
-namespace RPG.Core
+namespace GameClient.Core
 {
     public interface IAction
     {

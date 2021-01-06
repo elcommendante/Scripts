@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using RPG.Core;
+using GameClient.Core;
 
 
 public class Spawner : MonoBehaviour

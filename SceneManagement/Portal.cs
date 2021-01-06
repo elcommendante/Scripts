@@ -2,8 +2,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
+using GameClient.Saving;
 
-namespace RPG.SceneManagement
+namespace GameClient.SceneManagement
 {
     public class Portal : MonoBehaviour
     {
@@ -37,10 +38,21 @@ namespace RPG.SceneManagement
                 Debug.LogError("Scene to load is not set");
                 yield break;
             }
-            Fader fader = FindObjectOfType<Fader>();
             DontDestroyOnLoad(gameObject); // Nonsense - was adding more objects to scene
+            Fader fader = FindObjectOfType<Fader>();
+            SavingWrapper savingWrapper = FindObjectOfType<SavingWrapper>();
+
             yield return fader.FadeOut(fadeOutTime);
+
+            savingWrapper.Save();
+
+
+
             yield return SceneManager.LoadSceneAsync(sceneToLoad);
+
+            savingWrapper.Load();
+
+            
             print("Scene loaded");
             Portal otherPortal = GetOtherPortal();
             print("Portal other portal");
@@ -52,12 +64,14 @@ namespace RPG.SceneManagement
             Destroy(gameObject);
         }
 
-        private static void UpdatePlayer(Portal otherPortal)
+        private void UpdatePlayer(Portal otherPortal)
         {
             GameObject player = GameObject.FindWithTag("Player");
-            player.GetComponent<NavMeshAgent>().Warp(otherPortal.spawnPoint.position);
-            // player.transform.position = otherPortal.spawnPoint.position; // if there is no mesh agent, can be used in future.
+            // player.GetComponent<NavMeshAgent>().Warp(otherPortal.spawnPoint.position);
+            player.GetComponent<NavMeshAgent>().enabled = false;
+            player.transform.position = otherPortal.spawnPoint.position; // if there is no mesh agent, can be used in future.
             player.transform.rotation = otherPortal.spawnPoint.rotation;
+            player.GetComponent<NavMeshAgent>().enabled = true;
             
         }
 

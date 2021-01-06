@@ -1,9 +1,9 @@
-using RPG.Combat;
-using RPG.Movement;
-using RPG.Core;
+using GameClient.Combat;
+using GameClient.Movement;
+using GameClient.Core;
 using UnityEngine;
 
-namespace RPG.Control
+namespace GameClient.Control
 {
     public class PlayerController : MonoBehaviour
     {

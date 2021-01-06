@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using GameClient.Core;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
-namespace RPG.Saving
+namespace GameClient.Saving
 {
     [ExecuteAlways]
     public class SaveableEntity : MonoBehaviour
@@ -16,15 +18,19 @@ namespace RPG.Saving
         }
         public object CaptureState()
         {
-            print("Capturing state for" + GetUniqueIdentifier());
-            return null;
+            return new SerializableVector3(transform.position);
         }
 
         public void RestoreState(object state)
         {
-            print("Restoring state for" + GetUniqueIdentifier());
+            SerializableVector3 position = (SerializableVector3)state;
+            GetComponent<NavMeshAgent>().enabled = false;
+            transform.position = position.ToVector();
+            GetComponent<NavMeshAgent>().enabled = true;
+            GetComponent<ActionScheduler>().CancelCurrentAction();
         }
 
+#if UNITY_EDITOR // not icluded in C# build
         private void Update() 
         {
             if(Application.IsPlaying(gameObject)) return;
@@ -43,5 +49,6 @@ namespace RPG.Saving
         }
 
     }
+#endif
 }
 

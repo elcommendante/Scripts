@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace RPG.World
+namespace GameClient.World
 {
 public class LightFlicker : MonoBehaviour
     {

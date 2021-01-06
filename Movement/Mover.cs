@@ -1,9 +1,9 @@
-using RPG.Core;
+using GameClient.Core;
 using UnityEngine;
 using UnityEngine.AI;
 
 
-namespace RPG.Movement
+namespace GameClient.Movement
 {
     public class Mover : MonoBehaviour, IAction
     {

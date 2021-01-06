@@ -1,12 +1,12 @@
 ﻿
 using UnityEngine;
-using RPG.Combat;
-using RPG.Core;
-using RPG.Movement;
+using GameClient.Combat;
+using GameClient.Core;
+using GameClient.Movement;
 using System;
 using UnityEngine.AI;
 
-namespace RPG.Control
+namespace GameClient.Control
 {
     public class AIController : MonoBehaviour
     {
@@ -16,7 +16,7 @@ namespace RPG.Control
         [SerializeField] float waypointTolerance = 1f;
         private float waypointDwellTime = 3f;
        
-        [SerializeField] float chaseSpeed = 4.5f;
+        // [SerializeField] float chaseSpeed = 4.5f;
         [SerializeField] float spawnMaxDistance = 10f;
         [Range(0,1)]
         [SerializeField] float patrolSpeedFraction = 0.2f; 
